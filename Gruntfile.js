@@ -24,7 +24,11 @@ module.exports = function (grunt) {
                 options: {
                     livereload: true // Ative o livereload para atualização automática no navegador
                 }
-            }
+            },
+            html:{
+                files:['src/index.html'],
+                tasks:['replace:dev'],
+             }
         },
 
         replace: {
@@ -34,6 +38,10 @@ module.exports = function (grunt) {
                         {
                             match: 'ENDERECO_DO_CSS',
                             replacement:  ' ./styles/main.css '
+                        },
+                        {
+                            match: 'ENDERECO_DO_JS',
+                            replacement:  ' ../src/scripts/main.js '
                         }
                     ]
                 },
@@ -78,16 +86,18 @@ module.exports = function (grunt) {
                     'prebuild/index.html' :  'src/index.html',
                 }
             }
-        }
+        },
+        clean:['prebuild' ]
     })
 
 
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-watch')
     grunt.registerTask('default', ['less:development']);
-    grunt.registerTask('build', ['less:production', 'htmlmin:dist', 'replace:dist']);
+    grunt.registerTask('build', ['less:production', 'htmlmin:dist', 'replace:dist' ,'clean']);
     grunt.loadNpmTasks('grunt-replace');
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
+    grunt.loadNpmTasks('grunt-contrib-clean');
 
     // Tarefa para iniciar o watch
     grunt.registerTask('watchStyles', ['watch']);
